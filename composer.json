@@ -1,0 +1,27 @@
+{
+    "name": "technicalguru/jquery",
+    "description": "Provides jQuery to PHP apps",
+    "type": "library",
+    "keywords" : [
+        "jquery",
+        "javascript"
+    ],
+    "license" : "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "technicalguru",
+            "email": "github@ralph-schuster.eu"
+        }
+    ],
+    "require" : { 
+        "php" : ">=7.0.0"
+    },  
+    "autoload" : { 
+        "psr-4" : {
+            "TgJQuery\\" : "src/TgJQuery/"
+        }       
+    },  
+    "require-dev" : { 
+        "phpunit/phpunit" : "^9"
+    }   
+}
