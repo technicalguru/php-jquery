@@ -16,7 +16,7 @@ class JQuery {
 
     public const SLIM_MINIFIED = 'slim.min';
 
-    private static $BASE_URI = 'http://code.jquery.com/jquery/';
+    private static $BASE_URI = 'http://code.jquery.com';
     private static $versions = NULL;
     
     /**
@@ -26,7 +26,7 @@ class JQuery {
      */
     public static function getVersions() {
         if (self::$versions == NULL) {
-            $coreDownloadPage = file_get_contents(self::$BASE_URI);
+            $coreDownloadPage = file_get_contents(self::$BASE_URI.'/jquery/');
             $matches = array();
             if (preg_match_all('/<a (class=\'open-sri-modal\' )?href=["\']\\/jquery-([^"\']*).js["\']/', $coreDownloadPage, $matches)) {
                 $versions = array();
@@ -54,28 +54,31 @@ class JQuery {
      * @return string the latest version or latest version of $majorVersion.
      */
     public static function getLatest($majorVersion = NULL) {
-        $versions = self::getVersions();
-        $ignore   = FALSE;
-        
-        // Only use numbered versions when no major was given
-        if ($majorVersion == NULL) {
-            if (preg_match('/^[^\\d]/', $version)) {
-                $ignore = TRUE;
-            }
-        }
-        
-        // Always ignore -git versions (they are not latest/stable)
-        if (strpos($version, '-git')) {
-            $ignore = TRUE;
-        }
+		$versions = self::getVersions();
 
-        if (!$ignore) {
-            if (($majorVersion == NULL) || (strpos($version, $majorVersion) === 0)) {
-                if (($rc == NULL) || (version_compare($version, $rc) > 0)) {
-                    $rc = $version;
-                }
-            }
-        }
+		foreach ($versions AS $version) {
+			$ignore   = FALSE;
+			
+			// Only use numbered versions when no major was given
+			if ($majorVersion == NULL) {
+				if (preg_match('/^[^\\d]/', $version)) {
+					$ignore = TRUE;
+				}
+			}
+			
+			// Always ignore -git versions (they are not latest/stable)
+			if (strpos($version, '-git')) {
+				$ignore = TRUE;
+			}
+
+			if (!$ignore) {
+				if (($majorVersion == NULL) || (strpos($version, $majorVersion) === 0)) {
+					if (($rc == NULL) || (version_compare($version, $rc) > 0)) {
+						$rc = $version;
+					}
+				}
+			}
+		}
 
         if ($rc == NULL) throw new \Exception('Cannot find latest jQuery version');
         return $rc;
@@ -93,11 +96,11 @@ class JQuery {
      *            - whether a CDN link can be delivered (optional, default is FALSE)
      * @return string the URI to the jQuery library
      */
-    public static function getUri($version = 'latest', $type = MINIFIED, $fromRemote = FALSE) {
+    public static function getUri($version = 'latest', $type = JQuery::MINIFIED, $fromRemote = FALSE) {
         if ($version == 'latest') {
             $version = self::getLatest();
         }
-        $rc = self::BASE_URI.'/jquery-'.$version;
+        $rc = self::$BASE_URI.'/jquery-'.$version;
         if ($type) {
             $rc .= '.'.$type;
         }
