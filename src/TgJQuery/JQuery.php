@@ -42,7 +42,7 @@ class JQuery {
                 }
                 self::$versions = array_keys($versions);
             } else {
-                throw new \Exception('Cannot find jQuery versions');
+                throw new JQueryException('Cannot find jQuery versions');
             }
         }
         return self::$versions;
@@ -80,7 +80,7 @@ class JQuery {
 			}
 		}
 
-        if ($rc == NULL) throw new \Exception('Cannot find latest jQuery version');
+        if ($rc == NULL) throw new JQueryException('Cannot find latest jQuery version', $majorVersion);
         return $rc;
     }
     
@@ -99,12 +99,36 @@ class JQuery {
     public static function getUri($version = 'latest', $type = JQuery::MINIFIED, $fromRemote = FALSE) {
         if ($version == 'latest') {
             $version = self::getLatest();
-        }
-        $rc = self::$BASE_URI.'/jquery-'.$version;
+		}
+
+		// Construct filename
+		$filename = 'jquery-'.$version;
         if ($type) {
-            $rc .= '.'.$type;
+            $$filename .= '.'.$type;
         }
-        return $rc.'.js';
+		$filename .= '.js';
+
+		// Remote URL
+		$remote    = self::$BASE_URI.'/'.$filename;
+		$rc        = $remote;
+
+		// Local caching
+		if (!$fromRemote) {
+			$localPath = realpath(__DIR__.'/../../js/'.$filename);
+			if (!file_exists($localPath)) {
+				$js = file_get_contents($remote);
+				if ($js === FALSE) throw new JQueryException('Cannot load from remote jQuery URI', $remote);
+				$ok = file_put_contents($localPath, $js);
+				if ($ok === FALSE) throw new JQueryException('Cannot write jQuery to local disk', $localPath);
+			}
+			$docRoot = $_SERVER['CONTEXT_DOCUMENT_ROOT'] ? $_SERVER['CONTEXT_DOCUMENT_ROOT'] : $_SERVER['_DOCUMENT_ROOT'];
+			$local   = '/';
+			if (strpos($localPath, $docRoot) === 0) $local = substr($localPath, strlen($docRoot));
+			else throw new JQueryException('Cannot compute local path', $localPath);
+			$rc = $local;
+		}
+
+        return $rc;
     }
 
     /**
