@@ -21,7 +21,7 @@ composer install technicalguru/jquery
 ## By Package Download
 You can download the source code packages from [GitHub Release Page](https://github.com/technicalguru/php-jquery/releases)
 
-## After Instllation Task
+## After Installation Task
 You will need to make the directory `vendor/technicalguru/jquery/js` writable for your webserver when you want
 to make use of the local caching feature.
 
