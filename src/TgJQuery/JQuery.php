@@ -22,7 +22,7 @@ class JQuery {
     /**
      * Returns all versions available.
      *
-     * @return a list of available versions
+     * @return array a list of available versions
      */
     public static function getVersions() {
         if (self::$versions == NULL) {
@@ -31,7 +31,6 @@ class JQuery {
             if (preg_match_all('/<a (class=\'open-sri-modal\' )?href=["\']\\/jquery-([^"\']*).js["\']/', $coreDownloadPage, $matches)) {
                 $versions = array();
                 foreach ($matches[2] as $version) {
-                    $orig = $version;
                     $pos = strpos($version, '.min');
                     if ($pos !== FALSE) $version = substr($version, 0, $pos);
                     $pos = strpos($version, '.slim');
@@ -56,6 +55,7 @@ class JQuery {
     public static function getLatest($majorVersion = NULL) {
 		$versions = self::getVersions();
 
+		$rc = NULL;
 		foreach ($versions AS $version) {
 			$ignore   = FALSE;
 			
