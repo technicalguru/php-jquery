@@ -6,7 +6,7 @@ namespace TgJQuery;
  * Exception for any jQuery related errors.
  * <p>The $info field can contain additional information about the error.</p>
  */
-class JQueryException extends Exception {
+class JQueryException extends \Exception {
 
 	public $info;
 
