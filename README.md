@@ -54,7 +54,7 @@ $lastestVersionNumber = \TgJQuery\JQuery::getLatest('3.3');
 The following method will give you URIs for your further inspection:
 
 ```
-use \TgJQuery\JQuery;
+use TgJQuery\JQuery;
 
 // Get URI to latest version, as uncompressed JS
 $uri = JQuery::getUri('latest', JQuery::UNCOMPRESSED, TRUE);
@@ -71,7 +71,7 @@ The boolean parameter `TRUE` tells JQuery to use remote versions only and not to
 You can get the correct HTML script tag to be included in your HTML output in the same way:
 
 ```
-use \TgJQuery\JQuery;
+use TgJQuery\JQuery;
 
 // Get HTML link to latest version, as uncompressed JS
 $link = JQuery::getLink('latest', JQuery::UNCOMPRESSED, TRUE);
@@ -88,7 +88,7 @@ Most projects prefer not to serve the jQuery library from remote CDNs but rather
 is also the default. That's why the `getUri()` and `getLink()` calls can be written much shorter.
 
 ```
-use \TgJQuery\JQuery;
+use TgJQuery\JQuery;
 
 // Get a local cache URI to latest version, as minified JS
 $uri = JQuery::getUri('latest');
