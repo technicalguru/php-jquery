@@ -119,8 +119,7 @@ class JQuery {
 				$js = file_get_contents($remote);
 				if ($js === FALSE) throw new JQueryException('Cannot load from remote jQuery URI', $remote);
 				$ok = file_put_contents($localPath, $js);
-				echo "localPath = $localPath<br>";
-				if ($ok === FALSE) throw new JQueryException('Cannot write jQuery to local disk', $localPath);
+				if ($ok === FALSE) throw new JQueryException('Cannot write jQuery to local disk: '.$localPath);
 			}
 			$docRoot = $_SERVER['CONTEXT_DOCUMENT_ROOT'] ? $_SERVER['CONTEXT_DOCUMENT_ROOT'] : $_SERVER['_DOCUMENT_ROOT'];
 			$local   = '/';
