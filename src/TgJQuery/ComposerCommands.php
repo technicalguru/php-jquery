@@ -20,6 +20,9 @@ class ComposerCommands {
     }
     
     protected static function ensureWriteability() {
+		if (!file_exists(__DIR__.'/../../js')) {
+			mkdir(__DIR__.'/../../js');
+		}
         chmod(__DIR__.'/../../js', "777");
     }
 }
