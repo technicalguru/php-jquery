@@ -14,8 +14,8 @@ This project is licensed under [GNU LGPL 3.0](LICENSE.md).
 
 ## By Composer
 
-```
-composer install technicalguru/jquery
+```sh
+composer require technicalguru/jquery
 ```
 
 ## By Package Download
